@@ -1,12 +1,8 @@
-# TypeScript এ `any` এবং `unknown`
+# TypeScript এ any এবং unknown
 
-## Introduction
+TypeScript এ কাজ করার সময় অনেক সময় এমন data আসে যেটার type আগে থেকে জানা থাকে না। যেমন API response বা user input। এই ধরনের ক্ষেত্রে সাধারণত `any` বা `unknown` use করা হয়। কিন্তু দুইটার behaviour এক না।
 
-TypeScript এ অনেক সময় এমন data নিয়ে কাজ করতে হয় যার type আগে থেকে জানা থাকে না। যেমন API response বা user input। এই ধরনের data handle করার সময় `any` এবং `unknown` ব্যবহার করা যায়। কিন্তু দুইটার মধ্যে বড় পার্থক্য আছে।
-
-## Why `any` is risky
-
-`any` ব্যবহার করলে TypeScript type checking অনেকটা বন্ধ করে দেয়। তখন ভুল code লিখলেও TypeScript error দেখায় না।
+`any` use করলে TypeScript type checking অনেকটা ignore করে ফেলে। তাই ভুল code লিখলেও অনেক সময় error দেখায় না।
 
 ```ts
 let value: any = 123;
@@ -14,11 +10,11 @@ let value: any = 123;
 console.log(value.toUpperCase());
 ```
 
-এখানে `value` number, কিন্তু আমরা string method use করেছি। TypeScript error দেখাবে না, কিন্তু code run করলে problem হবে। তাই `any` কে type safety hole বলা হয়।
+এখানে `value` আসলে number। কিন্তু আমরা string method use করেছি। TypeScript কিছু বলবে না, কিন্তু runtime এ error হবে।
 
-## Why `unknown` is safer
+এই কারণে `any` কে অনেক সময় type safety hole বলা হয়।
 
-`unknown` ব্যবহার করলে value সরাসরি use করা যায় না। আগে type check করতে হয়।
+অন্যদিকে `unknown` safer। কারণ `unknown` value সরাসরি use করা যায় না। আগে type check করতে হয়।
 
 ```ts
 let value: unknown = "Hello";
@@ -28,11 +24,9 @@ if (typeof value === "string") {
 }
 ```
 
-এখানে আগে check করা হয়েছে value string কিনা। তাই code বেশি safe।
+এখানে আগে check করা হয়েছে value string কিনা। তাই safely method use করা যাচ্ছে।
 
-## Type Narrowing
-
-Type narrowing মানে হলো check করার মাধ্যমে TypeScript কে নির্দিষ্ট type বুঝানো।
+এই type check করার process টাকেই type narrowing বলে।
 
 ```ts
 function checkValue(value: unknown) {
@@ -48,8 +42,4 @@ function checkValue(value: unknown) {
 }
 ```
 
-এখানে `typeof` use করে TypeScript বুঝতে পারে কোন জায়গায় value string আর কোন জায়গায় number।
-
-## Conclusion
-
-আমার মতে, type না জানা থাকলে `any` এর চেয়ে `unknown` ব্যবহার করা ভালো। কারণ `unknown` আমাদের type check করতে বাধ্য করে। এতে ভুল কম হয় এবং TypeScript এর type safety বজায় থাকে।
+আমার কাছে `unknown` বেশি ভালো লাগে। কারণ এটা type check করতে বাধ্য করে। এতে ভুল কম হয় আর code বেশি safe থাকে।
