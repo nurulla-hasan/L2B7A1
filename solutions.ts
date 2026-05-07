@@ -9,7 +9,8 @@ const reverseString = (str: string): string => {
 };
 
 // solution 3
-const checkType = (value: string | number): string => {
+type StringOrNumber = string | number;
+const checkType = (value: StringOrNumber): string => {
   if (typeof value === "string") {
     return "String";
   }
@@ -22,12 +23,12 @@ const getProperty = <O, K extends keyof O>(obj: O, key: K): O[K] => {
 };
 
 // solution 5
-interface IBook {
+interface Book {
   title: string;
   author: string;
   publishedYear: number;
 }
-const toggleReadStatus = (book: IBook): IBook & { isRead: boolean } => {
+const toggleReadStatus = (book: Book): Book & { isRead: boolean } => {
   const newObj = { ...book, isRead: true };
   return newObj;
 };
