@@ -1,10 +1,8 @@
 # TypeScript Generics
 
-## Introduction
+TypeScript এ Generics খুব useful একটা feature। এর মাধ্যমে reusable function বা type বানানো যায়। মানে একই function different type এর data নিয়ে কাজ করতে পারে, কিন্তু type safety ঠিক থাকে।
 
-Generics TypeScript এর একটি useful feature। এর মাধ্যমে আমরা reusable function বা type বানাতে পারি। একই function different type এর data নিয়ে কাজ করতে পারে, কিন্তু type safety নষ্ট হয় না।
-
-## Basic Example
+একটা simple example:
 
 ```ts
 function identity<T>(value: T): T {
@@ -12,18 +10,16 @@ function identity<T>(value: T): T {
 }
 ```
 
-এখানে `T` হলো generic type। এটা placeholder এর মতো কাজ করে।
+এখানে `T` একটা generic type। এটা placeholder এর মতো কাজ করে।
 
 ```ts
 const name = identity("John");
 const age = identity(21);
 ```
 
-প্রথম call এ TypeScript বুঝবে type string। দ্বিতীয় call এ বুঝবে type number।
+প্রথমটায় TypeScript বুঝবে এটা string, আর দ্বিতীয়টায় number।
 
-## Why not `any`?
-
-আমরা চাইলে `any` ব্যবহার করতে পারি।
+আমরা চাইলে `any` দিয়েও করতে পারি।
 
 ```ts
 function identity(value: any): any {
@@ -31,9 +27,9 @@ function identity(value: any): any {
 }
 ```
 
-কিন্তু `any` use করলে TypeScript ঠিকভাবে type track করতে পারে না। এতে ভুল হওয়ার chance থাকে। Generics ব্যবহার করলে function flexible থাকে, আবার type safety ও থাকে।
+কিন্তু `any` use করলে TypeScript ঠিকভাবে type বুঝতে পারে না। তাই ভুল হওয়ার chance বেশি থাকে। Generics use করলে function reusable থাকে, আবার type safety ও থাকে।
 
-## Generics with Array
+Generics array এর সাথেও use করা যায়।
 
 ```ts
 function getFirstItem<T>(items: T[]): T {
@@ -41,16 +37,16 @@ function getFirstItem<T>(items: T[]): T {
 }
 ```
 
-এই function number array বা string array দুইটার সাথেই কাজ করবে।
+এখন এটা number array বা string array দুইটার সাথেই কাজ করবে।
 
 ```ts
 const firstNumber = getFirstItem([10, 20, 30]);
 const firstString = getFirstItem(["apple", "mango"]);
 ```
 
-TypeScript automatically বুঝে নেয় কোনটা number আর কোনটা string।
+TypeScript automatically বুঝে নেয় কোনটার type কী।
 
-## Generics with Object Key
+Object এর property safely access করার সময়ও Generics useful।
 
 ```ts
 function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
@@ -58,7 +54,7 @@ function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
 }
 ```
 
-এখানে `K extends keyof T` মানে key অবশ্যই object এর valid key হতে হবে।
+এখানে `K extends keyof T` মানে key অবশ্যই object এর মধ্যে থাকতে হবে।
 
 ```ts
 const user = {
@@ -70,7 +66,7 @@ const user = {
 const userName = getProperty(user, "name");
 ```
 
-যদি ভুল key দেওয়া হয়, TypeScript error দেখাবে।
+যদি ভুল key দেই তাহলে TypeScript error দেখাবে।
 
 ```ts
 // getProperty(user, "email");
@@ -78,6 +74,4 @@ const userName = getProperty(user, "name");
 
 কারণ `email` user object এর মধ্যে নেই।
 
-## Conclusion
-
-Generics reusable এবং type-safe code লিখতে সাহায্য করে। এতে একই ধরনের code বারবার লিখতে হয় না। বড় TypeScript project এ clean এবং maintainable code লিখতে Generics অনেক useful।
+আমার কাছে Generics এর সবচেয়ে ভালো দিক হলো reusable code লেখা যায়, কিন্তু type safety নষ্ট হয় না। বড় project এ clean এবং maintainable code লিখতে এটা অনেক helpful।
